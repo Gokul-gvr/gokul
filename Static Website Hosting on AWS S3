@@ -1,0 +1,166 @@
+ The steps to host a static website on AWS S3, now with images:
+
+Project Overview
+
+We will cover the following key steps:
+
+1.  Create an S3 Bucket:** We'll create a new S3 bucket that will store your website's files.
+2.  Upload Website Content:** You'll upload your static website files (HTML, CSS, JS, images, etc.) to the S3 bucket.
+3.  Enable Static Website Hosting:** We'll configure the S3 bucket to function as a static website host.
+4.  Set Bucket Policy (Public Access):** We'll set a bucket policy to allow public read access to your website content.
+5.  Test Your Website:** You'll access your website using the S3 website endpoint.
+
+ Prerequisites
+
+   An AWS account. If you don't have one, you can create a free tier account [here](https://aws.amazon.com/free/).
+   Basic understanding of static websites (HTML, CSS, JavaScript).
+   Your static website files ready to be uploaded. If you don't have one, you can create a simple `index.html` file for testing purposes (e.g., a file with "Hello, World\!" content).
+
+-----
+
+Step-by-Step Guide
+
+ Step 1: Create an S3 Bucket
+
+1.  Sign in to the AWS Management Console:** Go to [https://aws.amazon.com/console/](https://aws.amazon.com/console/) and sign in.
+
+2.  Navigate to S3:** In the search bar at the top, type "S3" and select "S3" under Services.
+
+    http://googleusercontent.com/image_collection/image_retrieval/2490536690651505020
+
+3.  Create bucket:** Click on the "Create bucket" button.
+
+    http://googleusercontent.com/image_collection/image_retrieval/3495635284201894734
+
+4.  Configure bucket details:
+
+      AWS Region: Choose an AWS Region close to your users for lower latency.
+      Bucket name: Enter a unique name for your bucket. This name will be part of your website's URL, so choose something descriptive and memorable (e.g., `my-awesome-static-website-2025`).
+      Object Ownership: Keep the default setting "ACLs disabled (recommended)".
+      Block Public Access settings for this bucket:** **Uncheck** "Block all public access". You will get a warning that your bucket might become public, acknowledge this by checking the box. We need public access for static website hosting.
+      Bucket Versioning: Keep it disabled for this project.
+      Tags:** (Optional) Add any tags if you wish.
+      Default encryption: Keep it disabled for this project.
+      Advanced settings: Keep the defaults.
+
+5.  Create bucket: Click the "Create bucket" button at the bottom.
+
+ Step 2: Upload Website Content
+
+1.  Navigate to your newly created bucket:** From the S3 console, click on the name of the bucket you just created.
+2.  Upload files:
+       Click the "Upload" button.
+
+       Drag and drop your website files and folders into the upload area, or click "Add files" / "Add folder" to select them from your local machine.
+
+        http://googleusercontent.com/image_collection/image_retrieval/2650532561412135921
+
+      Important: Ensure your main HTML file is named `index.html` and your error page (if you have one) is named `error.html`. These are the default names S3 looks for.
+
+       Click "Upload" at the bottom to start the upload process.
+
+ Step 3: Enable Static Website Hosting
+
+1.  Navigate to your bucket: From the S3 console, click on the name of your bucket.
+
+2.  Go to Properties tab: Click on the "Properties" tab.
+
+    http://googleusercontent.com/image_collection/image_retrieval/13036459841705063280
+
+3.  Scroll down to Static website hosting: Find the "Static website hosting" section and click "Edit".
+
+    http://googleusercontent.com/image_collection/image_retrieval/1006125260783947213
+
+4.  Enable Static website hosting:
+
+      * Select "Enable".
+      * Hosting type: Choose "Host a static website".
+      * Index document: Enter `index.html` (or the name of your main HTML file).
+      * Error document: (Optional) If you have a custom error page (e.g., `404.html`), enter its name here. If not, you can leave it blank.
+      * Redirection rules: (Optional) Leave blank for this project.
+
+5.  Save changes: Click "Save changes".
+
+ Step 4: Set Bucket Policy (Public Access)
+
+1.  Navigate to your bucket: From the S3 console, click on the name of your bucket.
+
+2.  Go to Permissions tab: Click on the "Permissions" tab.
+
+    http://googleusercontent.com/image_collection/image_retrieval/398926590544359371
+
+3.  Scroll down to Bucket policy: Click on "Edit" in the "Bucket policy" section.
+
+    http://googleusercontent.com/image_collection/image_retrieval/13560531362999785279
+
+4.  Add the policy: Copy and paste the following JSON policy into the policy editor. Replace `YOUR_BUCKET_NAME` with the actual name of your S3 bucket.
+
+    ```json
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "PublicReadGetObject",
+                "Effect": "Allow",
+                "Principal": "*",
+                "Action": [
+                    "s3:GetObject"
+                ],
+                "Resource": [
+                    "arn:aws:s3:::YOUR_BUCKET_NAME/*"
+                ]
+            }
+        ]
+    }
+    ```
+
+      Explanation of the policy:
+          * `"Version": "2012-10-17"`: Specifies the policy language version.
+          * `"Sid": "PublicReadGetObject"`: A statement ID (can be any unique string).
+          * `"Effect": "Allow"`: Specifies that this policy allows the action.
+          * `"Principal": "*"`: Grants access to everyone (public access).
+          * `"Action": ["s3:GetObject"]`: Allows users to retrieve objects from the bucket.
+          * `"Resource": ["arn:aws:s3:::YOUR_BUCKET_NAME/*"]`: Specifies the resources this policy applies to – all objects (`/*`) within your bucket.
+
+5.  Save changes: Click "Save changes".
+
+ Step 5: Test Your Website
+
+1.  Navigate to your bucket: From the S3 console, click on the name of your bucket.
+
+2.  Go to Properties tab: Click on the "Properties" tab.
+
+3.  Scroll down to Static website hosting: You will find the "Bucket website endpoint" URL there.
+
+    http://googleusercontent.com/image_collection/image_retrieval/11162638040071836258
+
+4.  Open the URL: Copy this URL and paste it into your web browser.
+
+You should now see your static website live\!
+
+-----
+
+Cleanup (Optional but Recommended)
+
+To avoid incurring charges, you can delete your S3 bucket and its contents when you no longer need them.
+
+1.  Navigate to S3: From the AWS Management Console, go to S3.
+
+2.  Select your bucket: Check the box next to the bucket you created.
+
+3.  Empty the bucket: Click "Empty" and follow the prompts to confirm.
+
+    http://googleusercontent.com/image_collection/image_retrieval/12240900881106283614
+
+4.  Delete the bucket: After the bucket is empty, select it again, click "Delete", and follow the prompts to confirm.
+
+    http://googleusercontent.com/image_collection/image_retrieval/16554163017208589645
+
+-----
+
+ Further Enhancements (Beyond this project)
+
+  * Custom Domain: Use Amazon Route 53 to configure a custom domain name (e.g., `www.yourwebsite.com`) for your S3 hosted website.
+  * HTTPS (SSL/TLS): Use Amazon CloudFront in front of your S3 bucket to enable HTTPS, improve performance, and add more caching options.
+  * Deployment Automation: Automate the deployment of your static website using AWS CLI, AWS CloudFormation, or CI/CD pipelines (e.g., AWS CodePipeline, GitHub Actions).
+  * Logging and Monitoring: Configure S3 access logs and integrate with CloudWatch for monitoring website access and performance.
