@@ -1,0 +1,54 @@
+Flask API Hosted on AWS EC2
+Folder Structure
+flask-ec2-api/
+├── app.py
+├── requirements.txt
+└── README.md
+
+This project demonstrates how to deploy a simple Flask REST API on an AWS EC2 instance.
+
+ 🚀 API Features
+
+- `GET /` → Welcome message
+- `GET /hello/<name>` → Personalized greeting
+
+ 📦 Requirements
+
+- AWS account
+- Python 3
+- Flask
+- SSH access to EC2
+
+ ⚙️ Steps to Run on AWS EC2
+
+ 1. Launch an EC2 Instance
+- Choose Ubuntu Server (20.04)
+- Select `t2.micro` (Free Tier)
+- Configure Security Group:
+  - Allow port 22 (SSH)
+  - Allow port 5000 (Custom TCP)
+- Download the key pair 
+
+ 2. SSH into EC2 Instance
+```bash
+chmod 400 your-key.pem
+ssh -i "your-key.pem" ubuntu@your-ec2-public-ip
+
+
+Your Flask API
+                 Python code
+
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return jsonify({"message": "Flask API is running on AWS EC2!"})
+
+@app.route('/hello/<name>')
+def hello(name):
+    return jsonify({"greeting": f"Hello, {name}!"})
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)
