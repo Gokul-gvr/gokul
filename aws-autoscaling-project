@@ -39,7 +39,7 @@ https://docs.aws.amazon.com/autoscaling/ec2/userguide/launch-templates.html#laun
 
 https://docs.aws.amazon.com/autoscaling/ec2/userguide/AutoScalingGroup.html#CreateASG
 
-   * Go to **Auto Scaling Groups → Click **Create Auto Scaling group**.
+   * Go to Auto Scaling Groups → Click **Create Auto Scaling group**.
    * Select the launch template created earlier.
    * Choose VPC and select multiple subnets in different availability zones.
    * Set group size (minimum, desired, maximum instances).
