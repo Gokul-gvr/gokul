@@ -1,0 +1,59 @@
+Steps for AWS Auto Scaling Group Project
+
+1. Launch EC2 Instances
+
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html#launch-instance
+
+   * Go to AWS EC2 Dashboard.
+   * Click Launch Instance.
+   * Choose Amazon Linux 2 AMI.
+   * Select instance type (e.g., t2.micro).
+   * Configure instance details (VPC, subnet, IAM role).
+   * Add storage and tags.
+   * Set security group to allow HTTP (port 80) and SSH (port 22).
+   * Launch the instance.
+
+2. Create Load Balancer (ELB)
+
+https://docs.aws.amazon.com/elasticloadbalancing/latest/application/application-load-balancers.html#application-load-balancer-create
+
+   * In EC2 Dashboard, go to Load Balancers.
+   * Click Create Load Balancer → Select Application Load Balancer.
+   * Configure basic settings (name, scheme, IP address type).
+   * Set listeners (HTTP/HTTPS).
+   * Configure security groups.
+   * Set health check parameters.
+   * Register your EC2 instances with the load balancer.
+
+3. Create Launch Template for Auto Scaling
+
+https://docs.aws.amazon.com/autoscaling/ec2/userguide/launch-templates.html#launch-template-create
+
+   * Go to Launch Templates → Click **Create launch template**.
+   * Provide template name and version description.
+   * Choose AMI and instance type.
+   * Configure key pair, security groups, IAM role, storage.
+   * Create the template.
+
+4. Create Auto Scaling Group (ASG)
+
+https://docs.aws.amazon.com/autoscaling/ec2/userguide/AutoScalingGroup.html#CreateASG
+
+   * Go to **Auto Scaling Groups → Click **Create Auto Scaling group**.
+   * Select the launch template created earlier.
+   * Choose VPC and select multiple subnets in different availability zones.
+   * Set group size (minimum, desired, maximum instances).
+   * Attach the Application Load Balancer target group.
+   * Configure health checks.
+   * Set scaling policies (scale up when CPU > 70%, scale down when CPU < 30%).
+   * Review and create the ASG.
+
+5. Testing and Monitoring
+
+https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html
+
+* Access the Load Balancer URL in a browser to verify the app is accessible.
+   * Generate load on EC2 instances (using stress or Apache Bench).
+   * Observe Auto Scaling actions (instances launching/terminating based on CPU).
+   * Monitor instance health and metrics using Amazon CloudWatch.
+   * Set alerts/notifications for scaling events if needed.
